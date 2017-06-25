@@ -1,0 +1,37 @@
+{
+  "name": "kr.co.anylogic.gigaeyes360",
+  "version": "1.0.0",
+  "description": "A Codova plugin that simply allows you to immediately play a 360 video in fullscreen mode.",
+  "cordova": {
+    "id": "kr.co.anylogic.gigaeyes360",
+    "platforms": [
+      "android"
+    ]
+  },
+  "engines": {
+    "cordovaDependencies": {
+      "2.0.0": {
+        "cordova": ">100"
+      }
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JAEGYUN/cordova360.git"
+  },
+  "keywords": [
+    "cordova",
+    "video",
+    "player",
+    "fullscreen"
+  ],
+  "author": "civan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JAEGYUN/cordova360.git/issues"
+  },
+  "homepage": "https://github.com/JAEGYUN/cordova360.git#readme"
+}
