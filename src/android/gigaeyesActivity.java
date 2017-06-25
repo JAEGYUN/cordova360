@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-public class gigaeyesActivity extends Activity {
+public class GigaeyesActivity extends Activity {
 
     private VRVideoView mVideoView = null;
     private RelativeLayout mRelativeLayout = null;

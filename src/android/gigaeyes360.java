@@ -15,7 +15,7 @@ import org.json.JSONObject;
 /**
  * This class echoes a string called from JavaScript.
  */
-public class gigaeyes360 extends CordovaPlugin {
+public class Gigaeyes360 extends CordovaPlugin {
 
     private CallbackContext callbackContext;
 
@@ -28,7 +28,7 @@ public class gigaeyes360 extends CordovaPlugin {
             this.callbackContext = callbackContext;
             String videoUrl = args.getString(0);
             Context context = cordova.getActivity().getApplicationContext();
-            Intent intent = new Intent(context, gigaeyesActivity.class);
+            Intent intent = new Intent(context, GigaeyesActivity.class);
             intent.putExtra("VIDEO_URL", videoUrl);
             Log.d("FLP","Adicionaod extra: "+videoUrl);
             cordova.startActivityForResult(this, intent, 0);
