@@ -1,4 +1,4 @@
-package kr.co.anylogic.gigaeye360;
+package kr.co.anylogic.gigaeyes360;
 
 
 public class Sphere {

@@ -1,4 +1,4 @@
-package kr.co.anylogic.gigaeyes360;
+package kr.co.anylogic.gigaeye360;
 
 import java.io.File;
 import java.io.IOException;

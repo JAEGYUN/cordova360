@@ -20,11 +20,12 @@ public class gigaeyesActivity extends Activity {
 
     private VRVideoView mVideoView = null;
     private RelativeLayout mRelativeLayout = null;
-    private String videoSrc;
+	private String videoSrc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         Bundle extras  = getIntent().getExtras();
         if (extras != null) {
@@ -35,21 +36,6 @@ public class gigaeyesActivity extends Activity {
 
         Log.d("FLP","gigaeyesActivity videoSrc"+videoSrc);
         Toast.makeText(getApplicationContext(),"gigaeyesActivity videoSrc:"+videoSrc,Toast.LENGTH_SHORT).show();
-
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        // // create the linear layout to hold our video
-        // layout = new LinearLayout(this);
-        // LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        // layout.setLayoutParams(layoutParams);
-
-        // // add the surfaceView with the current video
-        // createVideoView();
-
-        // // add to the view
-        // setContentView(layout);
-
 
         setContentView(R.layout.activity_main);
 
@@ -98,6 +84,7 @@ public class gigaeyesActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void finishWithError() {
         setResult(100);
