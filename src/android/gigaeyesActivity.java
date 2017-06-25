@@ -2,27 +2,16 @@ package kr.co.anylogic.gigaeyes360;
 
 import android.app.Activity;
 
-// import android.content.pm.ActivityInfo;
-// import android.content.res.Configuration;
-// import android.graphics.Bitmap;
-// import android.media.AudioManager;
-// import android.media.MediaMetadataRetriever;
-// import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
 import android.util.DisplayMetrics;
-// import android.view.SurfaceHolder;
-// import android.view.SurfaceView;
-// import android.view.View;
+import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-// import android.view.Window;
-// import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-// import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -82,7 +71,6 @@ public class gigaeyesActivity extends Activity {
         params.leftMargin = 0;
         params.topMargin = 0;
 
-        // Uri uri = Uri.parse("rtsp://211.54.3.138:1935/client_test/dahua360-1st-half-stream2nd.stream");
         Uri uri = Uri.parse(videoSrc);
         mVideoView = new VRVideoView(this, uri);
 
@@ -115,87 +103,6 @@ public class gigaeyesActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-//     private void createVideoView() {
-//         surfaceView = new SurfaceView(getApplicationContext());
-//         surfaceView.setOnClickListener(new View.OnClickListener() {
-//             @Override
-//             public void onClick(View v) {
-//                 Toast.makeText(getApplicationContext(),"not supported function",Toast.LENGTH_SHORT).show();
-//             }
-//         });
-//         surfaceHolder = surfaceView.getHolder();
-//         surfaceHolder.addCallback(this);
-
-//         layout.addView(surfaceView);
-//     }
-
-//     @Override
-//     public void surfaceCreated(SurfaceHolder holder) {
-//         try {
-//             // Surface ready, add the mediaPlayer to it
-//             mediaPlayer = new MediaPlayer();
-
-//             // Setting up media player
-//             mediaPlayer.setDisplay(surfaceHolder);
-//             mediaPlayer.setDataSource(videoSrc);
-//             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//             mediaPlayer.setVolume(0f,0f);
-//             mediaPlayer.setScreenOnWhilePlaying(true);
-//             mediaPlayer.setOnPreparedListener(this);
-//             mediaPlayer.setOnErrorListener(this);
-
-//             mediaPlayer.prepareAsync();
-//         } catch (IOException e) {
-//             Toast.makeText(getApplicationContext(), "can not load 360 video",Toast.LENGTH_SHORT).show();
-//             e.printStackTrace();
-//             finishWithError();
-//         }
-
-//     }
-
-//     @Override
-//     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-// //        if (mediaPlayer.isPlaying()) {
-// //            mediaPlayer.stop();
-// //            mediaPlayer.release();
-// //        } else {
-// //            mediaPlayer.start();
-// //        }
-//     }
-
-//     @Override
-//     public void surfaceDestroyed(SurfaceHolder holder) {
-//         if (mediaPlayer.isPlaying()) {
-//             mediaPlayer.stop();
-//             mediaPlayer.release();
-//         }
-//     }
-
-
-
-//     @Override
-//     public void onPrepared(MediaPlayer mp) {
-//         Log.d("FLP", "onPrepared fired");
-//         mediaPlayer.start();
-//     }
-
-
-//     @Override
-//     public boolean onError(MediaPlayer mp, int what, int extra) {
-//         Log.d("FLP", "onError fired");
-//         Toast.makeText(getApplicationContext(), "can not play 360 video", Toast.LENGTH_SHORT).show();
-//         finishWithError();
-//         return false;
-//     }
-
-//     @Override
-//     public void onBackPressed() {
-// //        super.onBackPressed();
-//         Log.d("FLP", "DO NOTHING");
-//         setResult(Activity.RESULT_OK);
-//         finish();
-//     }
 
     private void finishWithError() {
         setResult(100);
