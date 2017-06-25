@@ -48,7 +48,7 @@
       </config-file>
       <source-file src="src/android/Camera.java" target-dir="src/kr/co/anylogic/gigaeyes360" />
       <source-file src="src/android/Sphere.java" target-dir="src/kr/co/anylogic/gigaeyes360" />
-      <source-file src="src/android/VRVideoViewW.java" target-dir="src/kr/co/anylogic/gigaeyes360" />
+      <source-file src="src/android/VRVideoView.java" target-dir="src/kr/co/anylogic/gigaeyes360" />
       <source-file src="src/android/gigaeyes360.java" target-dir="src/kr/co/anylogic/gigaeyes360" />
       <source-file src="src/android/gigaeyesActivity.java" target-dir="src/kr/co/anylogic/gigaeyes360" />
    </platform>
