@@ -26,11 +26,6 @@ public class gigaeyesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-            return;
-        }
-
         Bundle extras  = getIntent().getExtras();
         if (extras != null) {
             videoSrc = extras.getString("VIDEO_URL");
