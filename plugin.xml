@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="kr.co.anylogic.gigaeyes360" version="1.0.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="kr.co.anylogic.gigaeyes360.Gigaeyes360" version="1.0.0">
    <name>gigaeyes360</name>
    <js-module name="gigaeyes360" src="www/gigaeyes360.js">
       <clobbers target="cordova.plugins.gigaeyes360" />
    </js-module>
    <platform name="android">
       <config-file parent="/*" target="res/xml/config.xml">
-         <feature name="gigaeyes360">
+         <feature name="Gigaeyes360">
             <param name="android-package" value="kr.co.anylogic.gigaeyes360" />
          </feature>
       </config-file>
