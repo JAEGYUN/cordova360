@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Codova plugin that simply allows you to immediately play a 360 video in fullscreen mode.",
   "cordova": {
-    "id": "kr.co.anylogic.gigaeyes360",
+    "id": "kr.co.anylogic.gigaeyes360.Gigaeyes360",
     "platforms": [
       "android"
     ]

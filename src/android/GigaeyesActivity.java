@@ -2,6 +2,8 @@ package kr.co.anylogic.gigaeyes360;
 
 import android.app.Activity;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
@@ -10,6 +12,8 @@ import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -26,6 +30,10 @@ public class GigaeyesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+            return;
+        }
 
         Bundle extras  = getIntent().getExtras();
         if (extras != null) {
@@ -37,25 +45,34 @@ public class GigaeyesActivity extends Activity {
         Log.d("FLP","gigaeyesActivity videoSrc"+videoSrc);
         Toast.makeText(getApplicationContext(),"gigaeyesActivity videoSrc:"+videoSrc,Toast.LENGTH_SHORT).show();
 
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 
-        mRelativeLayout = (RelativeLayout) findViewById(R.id.main_relative_layout);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
 
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
+        mRelativeLayout = new RelativeLayout(this);
+
+//                (RelativeLayout) findViewById(R.id.main_relative_layout);
+
+//        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+//
+//        int width = dm.widthPixels;
+//        int height = dm.heightPixels;
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                width, height);
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 
-        params.leftMargin = 0;
-        params.topMargin = 0;
+//        params.leftMargin = 0;
+//        params.topMargin = 0;
+
+        mRelativeLayout.setLayoutParams(params);
 
         Uri uri = Uri.parse(videoSrc);
         mVideoView = new VRVideoView(this, uri);
 
-        mRelativeLayout.addView(mVideoView, params);
+        this.setContentView(mRelativeLayout);
+//        mRelativeLayout.addView(mVideoView, params);
     }
 
 
@@ -69,7 +86,7 @@ public class GigaeyesActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        // getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -79,9 +96,9 @@ public class GigaeyesActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
