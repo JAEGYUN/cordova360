@@ -43,36 +43,22 @@ public class GigaeyesActivity extends Activity {
         }
 
         Log.d("FLP","gigaeyesActivity videoSrc"+videoSrc);
-        Toast.makeText(getApplicationContext(),"gigaeyesActivity videoSrc:"+videoSrc,Toast.LENGTH_SHORT).show();
-
-//        setContentView(R.layout.activity_main);
-
+       
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         mRelativeLayout = new RelativeLayout(this);
 
-//                (RelativeLayout) findViewById(R.id.main_relative_layout);
-
-//        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
-//
-//        int width = dm.widthPixels;
-//        int height = dm.heightPixels;
-
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 
-//        params.leftMargin = 0;
-//        params.topMargin = 0;
-
-        mRelativeLayout.setLayoutParams(params);
 
         Uri uri = Uri.parse(videoSrc);
         mVideoView = new VRVideoView(this, uri);
 
         this.setContentView(mRelativeLayout);
-//        mRelativeLayout.addView(mVideoView, params);
+        mRelativeLayout.addView(mVideoView, params);
     }
 
 
@@ -85,20 +71,13 @@ public class GigaeyesActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        // getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+
         return super.onOptionsItemSelected(item);
     }
 
