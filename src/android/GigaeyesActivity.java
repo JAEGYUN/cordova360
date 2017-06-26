@@ -50,9 +50,11 @@ public class GigaeyesActivity extends Activity {
 
         mRelativeLayout = new RelativeLayout(this);
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
 
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( width, height);
 
         Uri uri = Uri.parse(videoSrc);
         mVideoView = new VRVideoView(this, uri);
