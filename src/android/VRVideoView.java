@@ -26,7 +26,7 @@ import android.view.Surface;
 public class VRVideoView extends GLSurfaceView {
 
     private VideoRender mRenderer;
-    private Camera      mCamera;
+    private kr.co.anylogic.gigaeyes360.Camera      mCamera;
 
     private MediaPlayer mMediaPlayer = null;
     private File file = null;
