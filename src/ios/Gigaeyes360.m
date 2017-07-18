@@ -20,7 +20,7 @@
     self.lastCommand = command;
     
     // 뷰 호출
-    self.overlay = [[rtsplayerViewController alloc] initWithNibName:@"PanoramaViewController" bundle:nil];
+    self.overlay = [[PanoramaViewController alloc] initWithNibName:@"PanoramaViewController" bundle:nil];
     
     // 뷰컨트럴러에서 참조할 내용 생성(URL).
     self.overlay.origem = self;
