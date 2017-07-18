@@ -16,6 +16,7 @@
       <source-file src="src/ios/PanoramaViewController.m" />
       <resource-file src="src/ios/PanoramaViewController.xib" />
       <resource-file src="src/ios/res/btn_back3.png" />
+      <source-file src="src/ios/libs/SGPlayer" target-dir="SGPlayer" />
       <framework src="libiconv.tbd" />
       <framework src="libz.tbd" />
       <framework src="libbz2.tbd" />
