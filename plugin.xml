@@ -16,7 +16,7 @@
       <source-file src="src/ios/PanoramaViewController.m" />
       <resource-file src="src/ios/PanoramaViewController.xib" />
       <resource-file src="src/ios/res/btn_back3.png" />
-      <header-file src="src/ios/FFFrameExtractor.h" />
+      <!-- <header-file src="src/ios/FFFrameExtractor.h" /> -->
       <!-- <source-file compiler-flags="-I/usr/local/FFMpegiOS/include/ -I/usr/local/FFMpegiOS/include/libavcodec/ -I/usr/local/FFMpegiOS/include/libavformat/ -I/usr/local/FFMpegiOS/include/libswscale/" src="src/ios/FFFrameExtractor.m" /> -->
       <framework src="libiconv.tbd" />
       <framework src="libz.tbd" />
