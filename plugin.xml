@@ -16,8 +16,6 @@
       <source-file src="src/ios/PanoramaViewController.m" />
       <resource-file src="src/ios/PanoramaViewController.xib" />
       <resource-file src="src/ios/res/btn_back3.png" />
-      <!-- <header-file src="src/ios/FFFrameExtractor.h" /> -->
-      <!-- <source-file compiler-flags="-I/usr/local/FFMpegiOS/include/ -I/usr/local/FFMpegiOS/include/libavcodec/ -I/usr/local/FFMpegiOS/include/libavformat/ -I/usr/local/FFMpegiOS/include/libswscale/" src="src/ios/FFFrameExtractor.m" /> -->
       <framework src="libiconv.tbd" />
       <framework src="libz.tbd" />
       <framework src="libbz2.tbd" />
@@ -26,13 +24,6 @@
       <framework src="VideoToolBox.framework" />
       <framework src="src/ios/include/SGPlatform.framework" custom="true" />
       <framework src="src/ios/include/SGPlayer.framework" custom="true" />
-      <!-- <source-file framework="true" src="src/ios/FFMpegiOS/lib/libavcodec.a" />
-      <source-file framework="true" src="src/ios/FFMpegiOS/lib/libavdevice.a" />
-      <source-file framework="true" src="src/ios/FFMpegiOS/lib/libavfilter.a" />
-      <source-file framework="true" src="src/ios/FFMpegiOS/lib/libavformat.a" />
-      <source-file framework="true" src="src/ios/FFMpegiOS/lib/libavutil.a" />
-      <source-file framework="true" src="src/ios/FFMpegiOS/lib/libswresample.a" />
-      <source-file framework="true" src="src/ios/FFMpegiOS/lib/libswscale.a" /> -->
    </platform>
    <platform name="android">
       <config-file parent="/*" target="res/xml/config.xml">
