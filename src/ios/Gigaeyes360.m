@@ -3,9 +3,7 @@
 @implementation Gigaeyes360
 
 -(void) watchPanorama:(CDVInvokedUrlCommand*) command{
-    NSString* message = [command.arguments objectAtIndex:0];
     NSString * playType = @"panorama";
-    NSString * title = @"개발실1";
     
 //확인 예제 코드 : 웹뷰에서 전달한 URL이 전달되었는지를 확인한다.
 //현재 UIAlertController 가 아닌 deprecated된 UIAlertView를 사용한 것은 interface 내에서 view가 정의되어 있지 않아,
@@ -25,9 +23,8 @@
     // 뷰컨트럴러에서 참조할 내용 생성(URL).
     self.overlay.origem = self;
     self.overlay.videoAddress = [command argumentAtIndex:0];
-//    self.overlay.playType = [command argumentAtIndex:1];
     self.overlay.playType = playType;
-    self.overlay.camName = title;
+    self.overlay.camName = [command argumentAtIndex:1];
     NSLog(@"%@",[command argumentAtIndex:0]);
     
 //  현재 뷰를 자신으로 활성화

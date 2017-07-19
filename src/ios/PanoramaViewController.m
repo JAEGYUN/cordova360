@@ -1,12 +1,10 @@
 #import "Gigaeyes360.h"
 #import "PanoramaViewController.h"
 #import <SGPlayer/SGPlayer.h>
-//#import "FFFrameExtractor.h"
 
 @interface PanoramaViewController (){
     BOOL isHidden;
     UIActivityIndicatorView *spinner;
-//    FFFrameExtractor *frameExtractor;
     NSOperationQueue *opQueue;
 }
 
@@ -14,6 +12,7 @@
 @property (nonatomic, strong) SGPlayer * player;
 
 @property (weak, nonatomic) IBOutlet UILabel *stateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UISlider *progressSilder;
 @property (weak, nonatomic) IBOutlet UILabel *currentTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalTimeLabel;
@@ -29,7 +28,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     isHidden = NO;
-//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
     return self;
 }
@@ -37,7 +35,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.videoView setContentMode:UIViewContentModeScaleAspectFit];
     
     // 플레이어 호출 부분
     self.view.backgroundColor = [UIColor blackColor];
@@ -51,13 +48,15 @@
                                 progressAction:@selector(progressAction:)
                                 playableAction:@selector(playableAction:)
                                 errorAction:@selector(errorAction:)];
+     [self.navigationBarTitle.title setValue:self.camName forKey:self.camName];
     // 탭하여 화면 재생
     [self.player setViewTapAction:^(SGPlayer * _Nonnull player, SGPLFView * _Nonnull view) {
         NSLog(@"player display view did click!");
     }];
     [self.view insertSubview:self.player.view atIndex:0];
-    
-    self.navigationBarTitle.title =  self.camName;
+
+    // 캠명...   
+    self.navigationBarTitle.title = self.camName;
     
     NSLog(@"요청 URL %@", self.videoAddress);
     // URL을 UTF-8로 변환하여 저장(NSString --> NSURL)
@@ -66,15 +65,15 @@
     NSLog(@"요청 URL Check %@", [urlString absoluteString]);
     
     // 플레이어 디코더 선택...AVPlayer와 FFmepgDecoder 또는 모두 사용가능하나 FFmpeg을 사용하도록 설정
-//    self.player.decoder =  [SGPlayerDecoder decoderByFFmpeg];
+    // self.player.decoder =  [SGPlayerDecoder decoderByFFmpeg];
     self.player.decoder =  [SGPlayerDecoder decoderByDefault];
 
    // 하드웨어 가속
     self.player.decoder.hardwareAccelerateEnableForFFmpeg = YES;
     // 자동재생
-//    self.player.backgroundMode = SGPlayerBackgroundModeContinue;
+    // self.player.backgroundMode = SGPlayerBackgroundModeContinue;
     self.player.backgroundMode = SGPlayerBackgroundModeAutoPlayAndPause;
-    //   일반 영상 재생
+    //   파노라마 영상 재생
     [self.player replaceVideoWithURL:urlString videoType:SGVideoTypeVR];
     [self addTapGesture];
     
@@ -89,68 +88,17 @@
     self.player.view.frame = self.view.bounds;
 }
 
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void) viewDidAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    [self showSpinner];
     [opQueue addOperationWithBlock:^{
 
     }];
 }
 
-//#pragma mark - TESTE FFFrameExtractor
-//
-//- (void)displayNextFrame:(NSTimer *)timer
-//{
-//    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
-//        [opQueue addOperationWithBlock:^(void){
-//            if (frameExtractor.delegate == nil) {
-//                frameExtractor.delegate = self;
-//            }
-//            [frameExtractor processNextFrame];
-//        }];
-//    }
-//}
-
-//- (void)updateWithCurrentUIImage:(UIImage *)image
-//{
-//    if (image != nil) {
-//        [self hideSpinner];
-//        self.videoView.image = image;
-//    }
-//}
-
-#pragma mark - FIM TESTE
-
-//-(void) showSpinner {
-//    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-//    spinner.bounds = self.view.frame;
-//    spinner.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6f];
-//    spinner.center = self.view.center;
-//    [self.view addSubview:spinner];
-//    [spinner startAnimating];
-//}
-
-//-(void) hideSpinner {
-//    [spinner stopAnimating];
-//}
-
-//-(IBAction)playButtonAction:(id)sender {
-//    lastFrameTime = -1;
-//    
-////    self.nextFrameTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/15
-////                                                           target:self
-////                                                         selector:@selector(displayNextFrame:)
-////                                                         userInfo:nil
-////                                                          repeats:YES];
-//}
-//
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
@@ -185,39 +133,20 @@
         direction = 1;
     }
     
-    CGPoint navbarNewCenter = CGPointMake(self.navBar.center.x, self.navBar.center.y + self.navBar.frame.size.height * direction);
-    CGPoint videoNewCenter  = CGPointMake(self.videoView.center.x, self.videoView.center.y + self.navBar.frame.size.height * direction);
-    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5f];
     
-    self.navBar.center = navbarNewCenter;
-    self.videoView.center = videoNewCenter;
-    
-    CGRect videoFrame = self.videoView.frame;
-    videoFrame.size = CGSizeMake(videoFrame.size.width, videoFrame.size.height + self.navBar.frame.size.height * direction * -1);
-    self.videoView.frame = videoFrame;
     
     [UIView commitAnimations];
 }
 
 - (IBAction)buttonDismissPressed:(id)sender {
-    
-//    frameExtractor.delegate = nil;
-//    [self.nextFrameTimer invalidate];
-//    [opQueue cancelAllOperations];
-//    [opQueue addOperationWithBlock:^(void){
-//        [frameExtractor stop];
-//    }];
-//    
-//    [self.origem finishOkAndDismiss];
 }
 
 - (IBAction)back:(id)sender
 {
     NSLog(@"뒤로가기 요청 : %@", sender);
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil ];
-//    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)play:(id)sender
