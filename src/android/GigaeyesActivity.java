@@ -25,7 +25,7 @@ public class GigaeyesActivity extends Activity {
     private VRVideoView mVideoView = null;
     private RelativeLayout mRelativeLayout = null;
 	private String videoSrc;
-
+    private String cctvName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +37,13 @@ public class GigaeyesActivity extends Activity {
 
         Bundle extras  = getIntent().getExtras();
         if (extras != null) {
-            videoSrc = extras.getString("VIDEO_URL");
+            this.videoSrc = extras.getString("VIDEO_URL");
+            this.cctvName = extras.getString("TITLE");
         } else {
             finishWithError();
         }
 
-        Log.d("FLP","gigaeyesActivity videoSrc"+videoSrc);
+        Log.d("FLP","gigaeyesActivity videoSrc"+this.videoSrc);
        
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

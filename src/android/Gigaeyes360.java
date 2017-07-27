@@ -7,10 +7,10 @@ import android.util.Log;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.PluginResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class Gigaeyes360 extends CordovaPlugin {
 
     private CallbackContext callbackContext;
-
+    private static String TAG = "Gigaeyes360";
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("coolMethod")) {
@@ -27,10 +27,15 @@ public class Gigaeyes360 extends CordovaPlugin {
         } else if (action.equals("watchPanorama")) {
             this.callbackContext = callbackContext;
             String videoUrl = args.getString(0);
+            String title = "";
+            if(args.length()>1){
+                title = args.getString(1);
+            }
             Context context = cordova.getActivity().getApplicationContext();
             Intent intent = new Intent(context, GigaeyesActivity.class);
             intent.putExtra("VIDEO_URL", videoUrl);
-            Log.d("FLP","Adicionaod extra: "+videoUrl);
+            intent.putExtra("TITLE", title);
+            Log.d(TAG,"Adicionaod extra: "+videoUrl);
             cordova.startActivityForResult(this, intent, 0);
             return true;
         }
@@ -41,13 +46,16 @@ public class Gigaeyes360 extends CordovaPlugin {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        Log.d("FLP","Result: "+resultCode);
+        Log.d(TAG,"Result: "+resultCode);
 
         if (resultCode == Activity.RESULT_CANCELED || resultCode == Activity.RESULT_OK)  {
-            Log.d("FLP", "OK");
+            Log.d(TAG, "OK");
             callbackContext.success();
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, "ok");
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
         } else {
-            Log.d("FLP", "error");
+            Log.d(TAG, "error");
             callbackContext.error("Failed");
         }
     }

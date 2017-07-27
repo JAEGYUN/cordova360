@@ -1,7 +1,6 @@
 package kr.co.anylogic.gigaeyes360;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -10,29 +9,35 @@ import java.nio.ShortBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
-import android.media.MediaPlayer;
+
+import android.widget.Toast;
 import android.net.Uri;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.Surface;
+import org.videolan.libvlc.Media;
+import org.videolan.libvlc.MediaPlayer;
+import org.videolan.libvlc.IVLCVout;
+import org.videolan.libvlc.LibVLC;
+import java.util.ArrayList;
 
-public class VRVideoView extends GLSurfaceView {
-
+public class VRVideoView extends GLSurfaceView  implements IVLCVout.Callback {
+    private static String TAG = "VRVideoView";
     private VideoRender mRenderer;
     private kr.co.anylogic.gigaeyes360.Camera      mCamera;
+
+    private LibVLC libvlc;
 
     private MediaPlayer mMediaPlayer = null;
     private File file = null;
     private String filePath = null;
     private Uri uri = null;
-
+    private String title = "";
     public VRVideoView(Context context, File file) {
         super(context);
         this.file = file;
@@ -84,6 +89,80 @@ public class VRVideoView extends GLSurfaceView {
             mMediaPlayer.stop();
             mMediaPlayer.release();
         }
+    }
+
+    @Override
+    public void onSurfacesCreated(IVLCVout ivlcVout) {
+
+    }
+
+    @Override
+    public void onSurfacesDestroyed(IVLCVout ivlcVout) {
+
+    }
+
+    @Override //VLC 레이아웃 설정
+    public void onNewLayout(IVLCVout vout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
+
+    }
+
+    @Override  //하드웨어 가속 에러시 플레이어 종료
+    public void onHardwareAccelerationError(IVLCVout vout) {
+        releasePlayer();
+        Toast.makeText(this.getContext(), "Error with hardware acceleration", Toast.LENGTH_LONG).show();
+    }
+
+    //VLC 플레이어 실행
+    private void createPlayer(SurfaceTexture surfaceTexture) {
+        releasePlayer();
+        try {
+
+            // Create LibVLC
+            ArrayList<String> options = new ArrayList<String>();
+            //options.add("--subsdec-encoding <encoding>");
+//            options.add("--aout=opensles");
+            options.add("--rtsp-tcp"); // time stretching
+            options.add("-vvv"); // verbosity
+            libvlc = new LibVLC(options);
+
+            // Create media player
+            mMediaPlayer = new MediaPlayer(libvlc);
+            // Set up video output
+            final IVLCVout vout = mMediaPlayer.getVLCVout();
+            vout.setVideoSurface(surfaceTexture);
+            vout.addCallback(this);
+            vout.attachViews();
+
+            Media m = null;
+            if (file != null) {
+                m = new Media(libvlc, file.getAbsolutePath());
+            } else if (filePath != null) {
+                m = new Media(libvlc, filePath);
+            } else if (uri != null) {
+                m = new Media(libvlc, uri);
+            }
+
+            mMediaPlayer.setMedia(m);
+            mMediaPlayer.play();
+
+        } catch (Exception e) {
+            Log.e(TAG,"Error creating player!" );
+            e.printStackTrace();
+        }
+    }
+
+    //플레이어 종료
+    private void releasePlayer() {
+        Log.d(TAG, "player release!!!");
+        if (libvlc == null)
+            return;
+        mMediaPlayer.stop();
+        final IVLCVout vout = mMediaPlayer.getVLCVout();
+        vout.removeCallback(this);
+        vout.detachViews();
+        libvlc.release();
+        libvlc = null;
+
     }
 
     public void setTouchEvent(MotionEvent event){
@@ -174,7 +253,7 @@ public class VRVideoView extends GLSurfaceView {
         private float mNear = 0.1f;
         private float mFar = 10.0f;
 
-        public VideoRender(Context context) {
+        private VideoRender(Context context) {
 
             // create sphere buffer
             CreateSphereBuffer(1.0f, 40, 40);
@@ -218,7 +297,7 @@ public class VRVideoView extends GLSurfaceView {
 
         }
 
-        public void set360VRMode(boolean flag){
+        private void set360VRMode(boolean flag){
             m360VRMode = flag;
         }
 
@@ -255,7 +334,7 @@ public class VRVideoView extends GLSurfaceView {
             mSurface.updateTexImage();
             mSurface.getTransformMatrix(mSTMatrix);
 
-            if(m360VRMode == true)
+            if(m360VRMode)
             {
                 GLES20.glEnable(GLES20.GL_DEPTH_TEST);
                 GLES20.glDepthFunc(GLES20.GL_LESS);
@@ -269,7 +348,7 @@ public class VRVideoView extends GLSurfaceView {
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
             GLES20.glBindTexture(GL_TEXTURE_EXTERNAL_OES, mTextureID);
 
-            if(m360VRMode == true)
+            if(m360VRMode)
             {
 
                 mSphereVertices.position(TRIANGLE_VERTICES_DATA_POS_OFFSET);
@@ -304,7 +383,7 @@ public class VRVideoView extends GLSurfaceView {
             GLES20.glEnableVertexAttribArray(maTextureHandle);
             checkGlError("glEnableVertexAttribArray maTextureHandle");
 
-            if(m360VRMode == true && mCamera != null)
+            if(m360VRMode && mCamera != null)
             {
                 // make identity matrix
                 Matrix.setIdentityM(mMVPMatrix, 0);
@@ -404,71 +483,7 @@ public class VRVideoView extends GLSurfaceView {
             mSurface = new SurfaceTexture(mTextureID);
             mSurface.setOnFrameAvailableListener(this);
 
-            Surface surface = new Surface(mSurface);
-
-            mMediaPlayer = new MediaPlayer();
-
-            if (file != null) {
-                try {
-                    mMediaPlayer.setDataSource(file.getAbsolutePath());
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (SecurityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            } else if (filePath != null) {
-                try {
-                    mMediaPlayer.setDataSource(filePath);
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (SecurityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            } else if (uri != null) {
-                try {
-                    mMediaPlayer.setDataSource(getContext(), uri);
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (SecurityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-
-            mMediaPlayer.setSurface(surface);
-            surface.release();
-
-            try {
-                mMediaPlayer.prepare();
-            } catch (IOException t) {
-                Log.e(TAG, "media player prepare failed");
-            }
-
-            mMediaPlayer.start();
-
+            createPlayer(mSurface);
         }
 
         synchronized public void onFrameAvailable(SurfaceTexture surface) {

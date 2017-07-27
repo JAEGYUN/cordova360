@@ -26,6 +26,7 @@
       <framework src="src/ios/include/SGPlayer.framework" custom="true" />
    </platform>
    <platform name="android">
+      <framework src="de.mrmaffen:vlc-android-sdk:1.9.8" />
       <config-file parent="/*" target="res/xml/config.xml">
          <feature name="Gigaeyes360">
             <param name="android-package" value="kr.co.anylogic.gigaeyes360.Gigaeyes360" />
