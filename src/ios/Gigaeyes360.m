@@ -36,7 +36,7 @@
 
 -(void) finishOkAndDismiss {
     // 실행종료.
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ok"]
                                 callbackId:self.lastCommand.callbackId];
     
     // dismiss view from stack
