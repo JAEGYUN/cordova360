@@ -1,6 +1,7 @@
 package kr.co.anylogic.gigaeyes360;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -127,6 +128,7 @@ public class VRVideoView extends GLSurfaceView  implements IVLCVout.Callback {
 
             // Create media player
             mMediaPlayer = new MediaPlayer(libvlc);
+            mMediaPlayer.setEventListener(mPlayerListener);
             // Set up video output
             final IVLCVout vout = mMediaPlayer.getVLCVout();
             vout.setVideoSurface(surfaceTexture);
@@ -547,6 +549,40 @@ public class VRVideoView extends GLSurfaceView  implements IVLCVout.Callback {
             }
         }
 
+    }
+
+    private MediaPlayer.EventListener mPlayerListener = new MyPlayerListener(this);
+
+    private static class MyPlayerListener implements MediaPlayer.EventListener {
+        private WeakReference<VRVideoView> mOwner;
+
+        public MyPlayerListener(VRVideoView owner) {
+            mOwner = new WeakReference<VRVideoView>(owner);
+        }
+
+        @Override
+        public void onEvent(MediaPlayer.Event event) {
+            VRVideoView player = mOwner.get();
+
+            switch(event.type) {
+                case MediaPlayer.Event.EndReached:
+                    Log.d(TAG, "MediaPlayerEndReached");
+                    player.releasePlayer();
+                    break;
+                case MediaPlayer.Event.Opening:
+                    Log.d(TAG,"loading bar open....");
+//                    GigaeyesActivity.hideLoading();
+                    break;
+                case MediaPlayer.Event.Playing:
+                    GigaeyesActivity.hideLoading();
+                    Log.d(TAG,"loading bar close....");
+                    break;
+                case MediaPlayer.Event.Paused:
+                case MediaPlayer.Event.Stopped:
+                default:
+                    break;
+            }
+        }
     }
 
 }
