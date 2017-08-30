@@ -17,7 +17,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalTimeLabel;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationBarTitle;
-
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (nonatomic, assign) BOOL progressSilderTouching;
 @end
 
@@ -38,6 +39,7 @@
     
     // 플레이어 호출 부분
     self.view.backgroundColor = [UIColor blackColor];
+    [self.indicator startAnimating];
     
     // 플레이어 등록
     self.player = [SGPlayer player];
@@ -52,6 +54,8 @@
     // 탭하여 화면 재생
     [self.player setViewTapAction:^(SGPlayer * _Nonnull player, SGPLFView * _Nonnull view) {
         NSLog(@"player display view did click!");
+        isHidden = !isHidden;
+        [self hiddenBar];
     }];
     [self.view insertSubview:self.player.view atIndex:0];
 
@@ -143,6 +147,11 @@
     [UIView commitAnimations];
 }
 
+- (void) hiddenBar{
+    [self.navigationBar setHidden:isHidden];
+    
+}
+
 - (IBAction)buttonDismissPressed:(id)sender {
 }
 
@@ -192,6 +201,7 @@
             break;
         case SGPlayerStatePlaying:
             text = @"Playing";
+            [self.indicator setHidden:YES];
             break;
         case SGPlayerStateSuspend:
             text = @"Suspend";
